@@ -56,9 +56,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="MotorControllerLocation.cs" />
+    <Compile Include="MotorController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RobotMotor.cs" />
+    <Compile Include="Motor.cs" />
     <Compile Include="Side.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
