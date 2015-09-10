@@ -25,7 +25,7 @@ namespace RobiForm
 
         private async void btnSpeed_Click(object sender, EventArgs e)
         {
-            await motorControl.SetControllerMotorsSpeed(Side.Both, 35.00);
+            await motorControl.SetControllerMotorsSpeed(Side.Both, 40.00);
         }
 
         private async void btnStop_Click(object sender, EventArgs e)
@@ -40,9 +40,16 @@ namespace RobiForm
             txtMotor1Acc.Text = string.Empty;
             txtMotor2Acc.Text = string.Empty;
 
-            if (motorControl.IsAttached)
+            if (motorControl != null && motorControl.IsAttached)
             {
                 await motorControl.SetControllerMotorsSpeed(Side.Both, 0.00);
+
+                motorControl.Controller.Attach -= motoControl_Attach;
+                motorControl.Controller.Detach -= motoControl_Detach;
+                motorControl.Controller.Error -= motoControl_Error;
+                motorControl.Controller.CurrentChange -= motoControl_CurrentChange;
+                motorControl.Controller.InputChange -= motoControl_InputChange;
+                motorControl.Controller.VelocityChange -= motoControl_VelocityChange;
 
                 motorControl.CloseController();
             }
@@ -79,16 +86,16 @@ namespace RobiForm
         private async void btnLeft_Click(object sender, EventArgs e)
         {
             var motorOperations = new List<Task>();
-            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Right, 1 * 30));
-            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Left, 1 * 30));
+            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Right, 1 * 20));
+            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Left, 1 * 40));
             await Task.WhenAll(motorOperations);
         }
 
         private async void btnRight_Click(object sender, EventArgs e)
         {
             var motorOperations = new List<Task>();
-            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Right, -1 * 30));
-            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Left, -1 * 30));
+            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Right, 1 * 40));
+            motorOperations.Add(motorControl.SetControllerMotorsSpeed(Side.Left, -1 * 20));
             await Task.WhenAll(motorOperations);
         }
 
@@ -119,8 +126,12 @@ namespace RobiForm
             await motorControl.SetControllerMotorsSpeed(Side.Both, 0.00);
             await motorControl.SetControllerMotorsAceleration(Side.Both, 100.00);
 
+            motorControl.LeftMotor.MotorControl = motorControl.Controller.motors[0];
+            motorControl.RightMotor.MotorControl = motorControl.Controller.motors[1];
+
             txtMotor1Acc.Text = "100.00";
             txtMotor2Acc.Text = "100.00";
+
             if (motorControl.IsAttached)
             {
                 SetMotorEnable(true);

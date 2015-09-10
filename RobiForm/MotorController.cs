@@ -19,15 +19,13 @@ namespace RobiForm
             _motorControl = new MotorControl();
             _motorControl.open();
 
+            _leftmotor = new Motor();
             _leftmotor.index = 0;
-            _leftmotor.MotorControl = _motorControl.motors[0];
-            _leftmotor.MotorControllerId = _motorControl.SerialNumber;
             _leftmotor.MotorSide = Side.Left;
             _leftmotor.Location = MotorControllerLocation.Front;
 
+            _rightmotor = new Motor();
             _rightmotor.index = 1;
-            _rightmotor.MotorControl = _motorControl.motors[1];
-            _rightmotor.MotorControllerId = _motorControl.SerialNumber;
             _rightmotor.MotorSide = Side.Right;
             _rightmotor.Location = MotorControllerLocation.Front;
         }
@@ -46,11 +44,13 @@ namespace RobiForm
         public Motor LeftMotor
         {
             get { return _leftmotor; }
+            set { _leftmotor = value; }
         }
 
         public Motor RightMotor
         {
             get { return _rightmotor; }
+            set { _leftmotor = value; }
         }
 
         public bool IsAttached
